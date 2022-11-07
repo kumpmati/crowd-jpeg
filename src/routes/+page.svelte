@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { RESET_THRESHOLD } from '$lib/config';
+	import { RESET_INTERVAL, RESET_THRESHOLD } from '$lib/config';
+	import HelpCircle from '$lib/icons/HelpCircle.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
-	const canReset = data.count > 5 && data.count % RESET_THRESHOLD <= 5;
+	const canReset = data.count > RESET_THRESHOLD && data.count % RESET_INTERVAL <= RESET_THRESHOLD;
 
 	const resetPic = async () => {
 		const response = await fetch('/api/reset');
@@ -25,37 +26,32 @@
 	src={'data: image/jpeg; base64,' + data.pic}
 	width={1920}
 	height={1281}
-	alt="beluga cat #{data.count}"
+	alt="image of a landscape compressed {data.count} times"
 />
 
-<p class="credits">
-	Photo by
-	<a
-		href="https://unsplash.com/@baileyzindel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
-		>Bailey Zindel</a
-	>
-	on
-	<a
-		href="https://unsplash.com/s/photos/landscape?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
-		>Unsplash</a
-	>
-</p>
+<nav>
+	<a class="about" href="/about"><HelpCircle /></a>
+
+	<p class="credits">
+		Photo by
+		<a
+			href="https://unsplash.com/@baileyzindel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+		>
+			Bailey Zindel
+		</a>
+		on
+		<a
+			href="https://unsplash.com/s/photos/landscape?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+			>Unsplash</a
+		>
+	</p>
+</nav>
 
 {#if canReset}
 	<button on:click={resetPic}>reset</button>
 {/if}
 
 <style>
-	@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;800&display=swap');
-
-	:global(:root) {
-		font-family: 'Urbanist';
-	}
-
-	:global(body) {
-		margin: 0;
-	}
-
 	img {
 		position: absolute;
 		top: 0;
@@ -68,7 +64,7 @@
 	button {
 		font-family: 'Urbanist';
 		position: absolute;
-		bottom: 1rem;
+		bottom: 0.5rem;
 		left: 50%;
 		z-index: 100;
 		border: none;
@@ -88,16 +84,26 @@
 		transform: translateX(-50%) scale(1.05);
 	}
 
-	.credits {
-		color: white;
-		font-size: 12px;
+	nav {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		position: absolute;
-		right: 1rem;
-		bottom: 1rem;
-		margin: 0;
+		bottom: 0;
+		left: 0;
+		padding: 0.5rem;
+		width: 100%;
+		z-index: 100;
+		color: white;
 	}
 
-	.credits a {
+	nav a {
+		display: inline-flex;
 		color: white;
+	}
+
+	.credits {
+		font-size: 12px;
+		margin: 0;
 	}
 </style>

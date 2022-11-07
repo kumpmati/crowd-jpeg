@@ -1,3 +1,4 @@
-export const DB_IMAGE_KEY = 'bg';
+export const DB_IMAGE_KEY = 'bg1';
 
-export const RESET_THRESHOLD = 200;
+export const RESET_INTERVAL = 200;
+export const RESET_THRESHOLD = 5;

@@ -21,8 +21,8 @@ export const updatePicture = async (id: string, data: Buffer) => {
 };
 
 export const setPicture = async (id: string, data: Buffer) => {
-	if (!(await getPicture(id))) {
-		return await new PictureModel({ id, image: data, count: 1 }).save();
+	if (!(await getPicture(id).catch(() => null))) {
+		return await new PictureModel({ id, image: data, count: 0 }).save();
 	}
 
 	return await PictureModel.updateOne({ id }, { image: data, count: 1 });
