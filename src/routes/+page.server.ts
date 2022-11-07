@@ -16,12 +16,12 @@ export const load: PageLoad = async ({ setHeaders, fetch }) => {
 		return null;
 	}
 
-	const rnd = ~~(Math.random() * 10);
+	const sizeDelta = Math.random() > 0.5 ? -5 : 5;
 
 	const updatedPicture = await sharp(doc.image)
-		// resize every time to ensure the image degrades a little
-		.resize({ width: 1920 / 1.5 + rnd, height: 1281 / 1.5 + rnd })
-		.jpeg({ quality: 60 })
+		// resize the image every time to ensure it degrades a little every time
+		.resize({ width: 1280 + sizeDelta, height: 854 + sizeDelta })
+		.jpeg({ quality: 40 })
 		.toBuffer();
 
 	const updatedDoc = await updatePicture(DB_IMAGE_KEY, updatedPicture);

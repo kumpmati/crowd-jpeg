@@ -16,12 +16,12 @@
 	<p>
 		This website is a small experiment, where each visit to the page deteriorates the main image.
 		Every 200 visitors a 'reset' button appears on the bottom. Clicking the button restores the
-		image back to its original quality. You have to be quick though, the reset button only works for
-		the next 5 visits, after that it's disabled again.
+		image back to its original quality. You have to be quick though, the more people visit the site,
+		the faster the reset button goes away again.
 		<br />
 		<br />
-		You could see this deterioration as a metaphor for the effects of tourism, or how humanity affects
-		nature, or whatever.
+		You could see this website as a metaphor for the effects of tourism, how humanity affects nature,
+		or how meme quality degrades over time as they are shared.
 		<br />
 		<br />
 		The source code is available on
