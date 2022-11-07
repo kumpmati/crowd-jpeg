@@ -1,14 +1,22 @@
 import type { RequestHandler } from './$types';
-import { getPicture, initMongoose, setPicture } from '$lib/server/services/mongoose';
+import {
+	getPicture,
+	initMongoose,
+	setPicture,
+	regeneratePictureSecret,
+	backupPicture
+} from '$lib/server/services/mongoose';
 import { error } from '@sveltejs/kit';
-import { DB_IMAGE_KEY, RESET_INTERVAL, RESET_THRESHOLD } from '$lib/config';
+import { DB_IMAGE_KEY } from '$lib/config';
 
-export const GET: RequestHandler = async ({ fetch }) => {
+export const GET: RequestHandler = async ({ fetch, request }) => {
 	await initMongoose();
 
-	const doc = await getPicture(DB_IMAGE_KEY).catch(() => null);
-	const count = doc?.count ?? 0;
+	const { searchParams } = new URL(request.url);
 
+	const doc = await getPicture(DB_IMAGE_KEY).catch(() => null);
+
+	// create new picture if it doesn't exist
 	if (!doc) {
 		const cleanPicture = await fetch('/1.jpg').then(async (d) =>
 			Buffer.from(await d.arrayBuffer())
@@ -17,14 +25,21 @@ export const GET: RequestHandler = async ({ fetch }) => {
 		return new Response('image refreshed');
 	}
 
-	const canReset = count > RESET_THRESHOLD && count % RESET_INTERVAL <= RESET_THRESHOLD;
-	if (!canReset) {
-		throw error(403, 'cannot reset');
+	const correctSecret = searchParams.get('secret') === doc.resetSecret;
+	if (!correctSecret) {
+		throw error(403, 'forbidden');
 	}
 
-	const cleanPicture = await fetch('/1.jpg').then(async (d) => Buffer.from(await d.arrayBuffer()));
+	// back up the last state of the picture
+	await backupPicture({ count: doc.count!, image: doc.image! });
 
+	const cleanPicture = await fetch('/1.jpg')
+		.then((d) => d.arrayBuffer())
+		.then((d) => Buffer.from(d));
+
+	// set new picture
 	await setPicture(DB_IMAGE_KEY, cleanPicture);
+	await regeneratePictureSecret(DB_IMAGE_KEY);
 
-	return new Response('beluga has been reset');
+	return new Response('picture has been reset');
 };
