@@ -27,21 +27,6 @@
 		The source code is available on
 		<a href="https://github.com/kumpmati/jpeg" target="_blank" rel="noreferrer">GitHub</a>.
 	</p>
-
-<!-- 
-	<h2>History of the page</h2>
-	<ul class="history">
-		{#each data.pics.sort((a, b) => b.date.getTime() - a.date.getTime()) as pic}
-			<li class="history-item">
-				<h3>{pic.date.toLocaleString()}</h3>
-				<p>Final count: <b>{pic.count}</b></p>
-				<img
-					src={'data: image/jpeg; base64,' + pic.image}
-					alt="state of the picture on {pic.date}"
-				/>
-			</li>
-		{/each}
-	</ul> -->
 </main>
 
 <style>
@@ -57,24 +42,6 @@
 		display: inline-flex;
 	}
 
-	.history {
-		display: flex;
-		gap: 2rem;
-		flex-direction: column;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.history-item h3,
-	.history-item p {
-		margin: 0.25rem 0;
-	}
-
-	img {
-		width: 100%;
-		border-radius: 0.5rem;
-	}
 
 	main {
 		margin: 0 auto;
