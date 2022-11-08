@@ -7,6 +7,5 @@ const q = queue({
 });
 
 export const addToQueue = (func: () => Promise<void>) => {
-  console.log("queue length:", q.length);
-  q.push(func);
+  if (queue.length < 5) q.push(func);
 };
