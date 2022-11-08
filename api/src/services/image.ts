@@ -52,8 +52,9 @@ export const degradeImage = async (image: Buffer): Promise<Buffer | null> => {
   const delta = Math.random() > 0.5 ? -2 : 2;
 
   const updatedPicture = await sharp(image)
-    // resize the image every time to ensure it degrades a little every time
-    .resize({ width: 1280 + delta, height: 720 + delta })
+    .sharpen({ m1: 0.2, sigma: Math.random() < 0.005 ? 0.5 : 0.2 })
+    .webp({ quality: 40 })
+    .gamma(1.15)
     .jpeg({ quality: 40 + delta })
     .toBuffer()
     .catch(() => null);
