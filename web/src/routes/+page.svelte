@@ -19,7 +19,7 @@
 </script>
 
 <svelte:head>
-	<title>You are visit #{data.count}</title>
+	<title>Current count: {data.count}</title>
 	<link rel="icon" href={'data: image/jpeg; base64,' + data.image} />
 </svelte:head>
 
@@ -30,8 +30,11 @@
 	alt="image of a landscape compressed {data.count} times"
 />
 
+
 <nav>
 	<a class="about" href="/about"><HelpCircle /></a>
+
+	<p class="visit-count">{data.count} visits since last reset</p>
 
 	<div class="buttons">
 		{#if data.resetSecret}
@@ -39,7 +42,7 @@
 		{/if}
 
 		<button on:click={() => (showOriginal = !showOriginal)}>
-			Show {showOriginal ? 'current' : 'original'}
+			Show {showOriginal ? "current" : "original"}
 		</button>
 	</div>
 
@@ -68,6 +71,15 @@
 		height: 100%;
 	}
 
+	.visit-count {
+		position: absolute;
+		left: 3rem;
+		color: #fff;
+		font-size: 13px;
+		margin: 0;
+		z-index: 1;
+	}
+
 	.buttons {
 		position: absolute;
 		left: 50%;
@@ -77,6 +89,14 @@
 		flex-direction: column;
 		align-items: center;
 		gap: 0.5rem;
+		z-index: 2;
+		width: 100%;
+	}
+
+	@media screen and (max-width: 700px) {
+		.buttons {
+			bottom: 2.5rem;
+		}
 	}
 
 	button {
@@ -119,26 +139,29 @@
 	}
 
 	.credits {
-		font-size: 12px;
+		font-size: 13px;
 		margin: 0;
-		background-color: rgba(255, 255, 255, 0.7);
-		backdrop-filter: blur(10px);
 		padding: 0.25rem 0.75rem;
 		border-radius: 3rem;
 		z-index: -1;
+		color: #fff;
+	}
+
+	.credits a {
+		color: #fff;
 	}
 
 	.about {
 		display: flex;
 		align-items: center;
-		background: rgba(255, 255, 255, 0.7);
-		backdrop-filter: blur(10px);
 		padding: 0.2rem;
 		border-radius: 5rem;
 		text-decoration: none;
 		font-weight: bold;
 		gap: 0.5rem;
 		transition: transform 200ms;
+		background: rgba(255, 255, 255, 0.7);
+		backdrop-filter: blur(10px);
 	}
 
 	.about:hover {
