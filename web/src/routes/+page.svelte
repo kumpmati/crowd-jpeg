@@ -90,7 +90,7 @@
 		align-items: center;
 		gap: 0.5rem;
 		z-index: 2;
-		width: 100%;
+		width: fit-content;
 	}
 
 	@media screen and (max-width: 700px) {
@@ -152,8 +152,8 @@
 	}
 
 	.about {
-		display: flex;
-		align-items: center;
+		display: grid;
+		place-content: center;
 		padding: 0.2rem;
 		border-radius: 5rem;
 		text-decoration: none;
