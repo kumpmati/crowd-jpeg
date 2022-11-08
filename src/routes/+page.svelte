@@ -15,9 +15,16 @@
 	<h1>About</h1>
 
 	<p>
-		This website was a small experiment, where each visit to the page deteriorates the main image.
-		Every {RESET_INTERVAL} visitors a reset button appears on the bottom, which can be used to restore
-		the image back to its original quality.
+		<b>
+			I had to shut the page down due to rapidly rising database costs, I wonder what could have
+			brought that... ;) Thanks for visiting!
+		</b>
+	</p>
+
+	<p>
+		This website was a small experiment, where each visit to the page would deteriorate the main
+		image. Every {RESET_INTERVAL} visitors a reset button appeared on the bottom, which could be used
+		to restore the image back to its original quality.
 		<br />
 		<br />
 		You could see this website as a metaphor for the effects of tourism, how humanity affects nature,
@@ -28,19 +35,12 @@
 		<a href="https://github.com/kumpmati/jpeg" target="_blank" rel="noreferrer">GitHub</a>.
 	</p>
 
-	<p>
-		<b>
-			I had to shut the page down due to rapidly rising database costs, I wonder what could have
-			brought that... :) Thanks for visiting!
-		</b>
-	</p>
-
-	<h2>History of the page</h2>
+	<h2>Reset history</h2>
 	<ul class="history">
 		{#each data.pics.sort((a, b) => b.date.getTime() - a.date.getTime()) as pic}
 			<li class="history-item">
 				<h3>{pic.date.toLocaleString()}</h3>
-				<p>Final count: <b>{pic.count}</b></p>
+				<p>Final count before reset: <b>{pic.count}</b></p>
 				<img
 					src={'data: image/jpeg; base64,' + pic.image}
 					alt="state of the picture on {pic.date}"
@@ -75,6 +75,7 @@
 		margin-top: 10rem;
 		margin-bottom: 5rem;
 		max-width: 30rem;
+		padding: 0 1rem;
 	}
 
 	p {
