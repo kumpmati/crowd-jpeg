@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { PUBLIC_API_URL } from '$env/static/public';
 	import HelpCircle from '$lib/icons/HelpCircle.svelte';
-	import type { PageData } from './$types';
+	import type { PictureState } from '$lib/types';
 
-	export let data: PageData;
+	export let data: PictureState;
 
 	let showOriginal = false;
 
@@ -32,9 +32,10 @@
 
 
 <nav>
-	<a class="about" href="/about"><HelpCircle /></a>
-
-	<p class="visit-count">{data.count} visits since last reset</p>
+	<div class="pill">
+		<a class="about" href="/about"><HelpCircle /></a>
+		<p class="visit-count">{data.count} visits since last reset</p>
+	</div>
 
 	<div class="buttons">
 		{#if data.resetSecret}
@@ -47,17 +48,13 @@
 	</div>
 
 	<p class="credits">
-		Photo by
-		<a
-			href="https://unsplash.com/@baileyzindel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
-		>
-			Bailey Zindel
+		Photo by <a href={data?.meta?.link ?? 'https://unsplash.com/@baileyzindel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText'}>
+			{data?.meta?.author ?? 'Bailey Zindel'}
 		</a>
 		on
-		<a
-			href="https://unsplash.com/s/photos/landscape?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
-			>Unsplash</a
-		>
+		<a href="https://unsplash.com/s/photos/landscape?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">
+			Unsplash
+		</a>
 	</p>
 </nav>
 
@@ -72,12 +69,11 @@
 	}
 
 	.visit-count {
-		position: absolute;
-		left: 3rem;
-		color: #fff;
+		color: #000;
 		font-size: 13px;
 		margin: 0;
 		z-index: 1;
+		padding-right: .5rem;
 	}
 
 	.buttons {
@@ -95,7 +91,7 @@
 
 	@media screen and (max-width: 700px) {
 		.buttons {
-			bottom: 2.5rem;
+			bottom: 3rem;
 		}
 	}
 
@@ -144,6 +140,7 @@
 		padding: 0.25rem 0.75rem;
 		border-radius: 3rem;
 		z-index: -1;
+		text-align: right;
 		color: #fff;
 	}
 
@@ -151,9 +148,9 @@
 		color: #fff;
 	}
 
-	.about {
-		display: grid;
-		place-content: center;
+	.pill {
+		display: flex;
+		align-items: center;
 		padding: 0.2rem;
 		border-radius: 5rem;
 		text-decoration: none;

@@ -1,6 +1,11 @@
 export type PictureState = {
 	id: string;
 	count: number;
-	data: string | null;
+	image: Buffer | null;
+	meta: {
+		file: string;
+		author: string;
+		link: string;
+	};
 	resetSecret: string | null;
 };

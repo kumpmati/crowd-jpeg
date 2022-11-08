@@ -1,5 +1,4 @@
-import { getCached } from "./cache";
-import { degradeImage, loadImageFromDisk } from "./image";
+import { degradeImage, IMAGE_AUTHORS, loadImageFromDisk } from "./image";
 import { v4 as uuid } from "uuid";
 import produce from "immer";
 import { addToQueue } from "./queue";
@@ -11,6 +10,7 @@ let _state: PictureState = {
   id: uuid(),
   count: 0,
   image: null,
+  meta: IMAGE_AUTHORS[0],
   resetSecret: uuid(),
 };
 
@@ -20,10 +20,15 @@ let _state: PictureState = {
 export const restoreState = async () => {
   const newest = await getNewestSnapshot();
 
-  _state.id = newest?.id;
+  _state.id = newest?.id ?? uuid();
   _state.count = newest?.count ?? 0;
   _state.image = newest?.image ?? null;
   _state.resetSecret = uuid();
+  _state.meta = {
+    file: newest?.meta?.file ?? IMAGE_AUTHORS[0].file,
+    author: newest?.meta?.author ?? IMAGE_AUTHORS[0].author,
+    link: newest?.meta?.link ?? IMAGE_AUTHORS[0].link,
+  };
 
   console.log("restored state to newest snapshot");
 };
@@ -40,8 +45,10 @@ export const advanceState = async () => {
     const nextState = await produce(getCurrentState(), async (prev) => {
       // load image if it doesn't exist
       if (!prev.image) {
-        const image = await getCached("original_image", loadImageFromDisk);
-        prev.image = image;
+        const image = await loadImageFromDisk();
+
+        prev.image = image.data;
+        prev.meta = image.meta;
       }
 
       const newImage = await degradeImage(prev.image);
@@ -69,10 +76,11 @@ export const resetState = async (id: string, secret: string) => {
 
   addToQueue(async () => {
     const nextState = await produce(getCurrentState(), async (prev) => {
-      const image = await getCached("original_image", loadImageFromDisk);
+      const image = await loadImageFromDisk();
 
       prev.count = 0;
-      prev.image = image;
+      prev.image = image.data;
+      prev.meta = image.meta;
       prev.resetSecret = uuid();
       prev.id = uuid();
     });

@@ -3,15 +3,45 @@ import { resolve } from "path";
 import { IMAGE_FOLDER_PATH } from "../config/env";
 import sharp from "sharp";
 
+export const IMAGE_AUTHORS: { file: string; author: string; link: string }[] = [
+  {
+    file: "./2.jpg",
+    author: "Daniela Cuevas",
+    link: "https://unsplash.com/@danielacuevas?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
+  },
+  {
+    file: "./3.jpg",
+    author: "John Mark Arnold",
+    link: "https://unsplash.com/@johnmarkarnold?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
+  },
+  {
+    file: "./4.jpg",
+    author: "Vincentiu Solomon",
+    link: "https://unsplash.com/@vincentiu?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
+  },
+  {
+    file: "./1.jpg",
+    author: "Bailey Zindel",
+    link: "https://unsplash.com/@baileyzindel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
+  },
+];
+
+let index = 0;
+
 /**
  * Loads the clean image from disk
  */
 export const loadImageFromDisk = async () => {
+  const meta = IMAGE_AUTHORS[index++ % IMAGE_AUTHORS.length];
+
   const file = await readFile(
-    resolve(process.cwd(), IMAGE_FOLDER_PATH, "./1.jpg")
+    resolve(process.cwd(), IMAGE_FOLDER_PATH, meta.file)
   );
 
-  return file;
+  return {
+    meta,
+    data: file,
+  };
 };
 
 /**

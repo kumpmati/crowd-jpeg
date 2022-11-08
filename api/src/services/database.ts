@@ -28,6 +28,7 @@ export const saveSnapshot = async (data: PictureState) => {
     count: data.count,
     image: await downsizeImage(data.image),
     date: new Date(),
+    meta: data.meta,
   };
 
   return await new SnapshotModel(snapshot).save();
