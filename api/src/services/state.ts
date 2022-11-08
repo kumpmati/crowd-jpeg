@@ -4,6 +4,9 @@ import produce from "immer";
 import { addToQueue } from "./queue";
 import { PictureState } from "../schemas/picture";
 import { getNewestSnapshot } from "./database";
+import { Mutex } from "async-mutex";
+
+let mutex = new Mutex();
 
 // in-memory state
 let _state: PictureState = {
@@ -30,8 +33,7 @@ export const restoreState = async () => {
     link: newest?.meta?.link ?? IMAGE_AUTHORS[0].link,
   };
 
-  console.log(_state.resetSecret);
-
+  console.log("secret:", _state.resetSecret);
   console.log("restored state to newest snapshot");
 };
 
@@ -43,26 +45,28 @@ export const getCurrentState = () => {
  * Increments the count by 1 and degrades the image a little.
  */
 export const advanceState = async () => {
-  addToQueue(async () => {
-    const nextState = await produce(getCurrentState(), async (prev) => {
-      // load image if it doesn't exist
-      if (!prev.image) {
-        const image = await loadImageFromDisk();
+  addToQueue(async () =>
+    mutex.runExclusive(async () => {
+      const nextState = await produce(getCurrentState(), async (prev) => {
+        // load image if it doesn't exist
+        if (!prev.image) {
+          const image = await loadImageFromDisk();
 
-        prev.image = image.data;
-        prev.meta = image.meta;
-      }
+          prev.image = image.data;
+          prev.meta = image.meta;
+        }
 
-      const newImage = await degradeImage(prev.image);
-      if (!newImage) return;
+        const newImage = await degradeImage(prev.image);
+        if (!newImage) return;
 
-      prev.count += 1;
-      prev.image = newImage;
-    });
+        prev.count += 1;
+        prev.image = newImage;
+      });
 
-    // update state
-    _state = nextState;
-  });
+      // update state
+      _state = nextState;
+    })
+  );
 
   return getCurrentState();
 };
@@ -71,23 +75,26 @@ export const advanceState = async () => {
  * Sets count to 0, restores the image quality and regenerates the secret and id.
  */
 export const resetState = async (id: string, secret: string) => {
-  const currentState = getCurrentState();
+  mutex.runExclusive(async () => {
+    const currentState = getCurrentState();
 
-  const isValid = id === currentState.id && secret === currentState.resetSecret;
-  if (!isValid) return null;
+    const isValid =
+      id === currentState.id && secret === currentState.resetSecret;
+    if (!isValid) return null;
 
-  const nextState = await produce(getCurrentState(), async (prev) => {
-    const image = await loadImageFromDisk();
+    const nextState = await produce(getCurrentState(), async (prev) => {
+      const image = await loadImageFromDisk();
 
-    prev.count = 0;
-    prev.image = image.data;
-    prev.meta = image.meta;
-    prev.resetSecret = uuid();
-    prev.id = uuid();
+      prev.count = 0;
+      prev.image = image.data;
+      prev.meta = image.meta;
+      prev.resetSecret = uuid();
+      prev.id = uuid();
+    });
+
+    // update state
+    _state = nextState;
   });
-
-  // update state
-  _state = nextState;
 
   return getCurrentState();
 };
