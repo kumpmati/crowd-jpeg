@@ -8,12 +8,14 @@
 	let showOriginal = false;
 
 	const resetPic = async () => {
-		const response = await fetch(`/api/reset?id=${data.id}&secret=${data.resetSecret}`);
+		const response = await fetch(`${PUBLIC_API_URL}/api/reset?id=${data.id}&secret=${data.resetSecret}`);
 
 		if (response.ok) {
+			alert('reset successfully!');
 			location.reload();
 		} else {
-			alert('something went wrong');
+			const err = await response.json();
+			alert(`error: ${err.message}`);
 		}
 	};
 </script>
@@ -29,7 +31,6 @@
 	height={720}
 	alt="image of a landscape compressed {data.count} times"
 />
-
 
 <nav>
 	<div class="pill">

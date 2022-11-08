@@ -2,7 +2,7 @@ import { ErrorRequestHandler, Response } from "express";
 import { AppError } from "../helpers/AppError";
 
 export const handleError = (err: AppError, res: Response) => {
-  console.error(err.message);
+  console.error("error handler", err.message);
 
   if (!err.isOperational) {
     process.exit(1);
