@@ -24,7 +24,7 @@
 </svelte:head>
 
 <img
-	src={showOriginal ? `${PUBLIC_API_URL}/static/1.jpg` : 'data: image/jpeg; base64,' + data.image}
+	src={showOriginal ? `${PUBLIC_API_URL}/static/${data.meta.file}` : 'data: image/jpeg; base64,' + data.image}
 	width={1280}
 	height={720}
 	alt="image of a landscape compressed {data.count} times"
