@@ -7,5 +7,6 @@ const q = queue({
 });
 
 export const addToQueue = (func: () => Promise<void>) => {
+  console.log("queue length:", q.length);
   q.push(func);
 };
