@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { RESET_INTERVAL } from '$lib/config';
 	import LeftArrow from '$lib/icons/LeftArrow.svelte';
-	import type { PageData } from './$types';
-
-	export let data: PageData;
 </script>
 
 <svelte:head>
@@ -31,6 +28,7 @@
 		<a href="https://github.com/kumpmati/jpeg" target="_blank" rel="noreferrer">GitHub</a>.
 	</p>
 
+<!-- 
 	<h2>History of the page</h2>
 	<ul class="history">
 		{#each data.pics.sort((a, b) => b.date.getTime() - a.date.getTime()) as pic}
@@ -43,7 +41,7 @@
 				/>
 			</li>
 		{/each}
-	</ul>
+	</ul> -->
 </main>
 
 <style>

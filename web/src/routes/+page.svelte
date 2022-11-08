@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { PUBLIC_API_URL } from '$env/static/public';
 	import HelpCircle from '$lib/icons/HelpCircle.svelte';
 	import type { PageData } from './$types';
 
@@ -7,7 +8,7 @@
 	let showOriginal = false;
 
 	const resetPic = async () => {
-		const response = await fetch(`/api/reset?secret=${data.secret}`);
+		const response = await fetch(`/api/reset?id=${data.id}&secret=${data.resetSecret}`);
 
 		if (response.ok) {
 			location.reload();
@@ -19,21 +20,21 @@
 
 <svelte:head>
 	<title>You are visit #{data.count}</title>
-	<link rel="icon" href={'data: image/jpeg; base64,' + data.pic} />
+	<link rel="icon" href={'data: image/jpeg; base64,' + data.data} />
 </svelte:head>
 
 <img
-	src={showOriginal ? '/1.jpg' : 'data: image/jpeg; base64,' + data.pic}
-	width={1920}
-	height={1281}
+	src={showOriginal ? `${PUBLIC_API_URL}/static/1.jpg` : 'data: image/jpeg; base64,' + data.data}
+	width={1280}
+	height={720}
 	alt="image of a landscape compressed {data.count} times"
 />
 
 <nav>
-	<a class="about" href="/about"><HelpCircle /> About</a>
+	<a class="about" href="/about"><HelpCircle /></a>
 
 	<div class="buttons">
-		{#if data.secret}
+		{#if data.resetSecret}
 			<button on:click={resetPic}>Reset this picture for everyone</button>
 		{/if}
 
@@ -124,6 +125,7 @@
 		backdrop-filter: blur(10px);
 		padding: 0.25rem 0.75rem;
 		border-radius: 3rem;
+		z-index: -1;
 	}
 
 	.about {
@@ -132,7 +134,6 @@
 		background: rgba(255, 255, 255, 0.7);
 		backdrop-filter: blur(10px);
 		padding: 0.2rem;
-		padding-right: 0.75rem;
 		border-radius: 5rem;
 		text-decoration: none;
 		font-weight: bold;
