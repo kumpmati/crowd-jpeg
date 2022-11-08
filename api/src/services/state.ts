@@ -30,6 +30,8 @@ export const restoreState = async () => {
     link: newest?.meta?.link ?? IMAGE_AUTHORS[0].link,
   };
 
+  console.log(_state.resetSecret);
+
   console.log("restored state to newest snapshot");
 };
 
