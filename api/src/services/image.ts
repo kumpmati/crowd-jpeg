@@ -5,6 +5,11 @@ import sharp from "sharp";
 
 export const IMAGE_AUTHORS: { file: string; author: string; link: string }[] = [
   {
+    file: "./1.jpg",
+    author: "Bailey Zindel",
+    link: "https://unsplash.com/@baileyzindel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
+  },
+  {
     file: "./2.jpg",
     author: "Daniela Cuevas",
     link: "https://unsplash.com/@danielacuevas?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
@@ -19,14 +24,9 @@ export const IMAGE_AUTHORS: { file: string; author: string; link: string }[] = [
     author: "Vincentiu Solomon",
     link: "https://unsplash.com/@vincentiu?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
   },
-  {
-    file: "./1.jpg",
-    author: "Bailey Zindel",
-    link: "https://unsplash.com/@baileyzindel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
-  },
 ];
 
-let index = 0;
+let index = ~~(Math.random() * IMAGE_AUTHORS.length);
 
 /**
  * Loads the clean image from disk
