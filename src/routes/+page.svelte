@@ -47,6 +47,24 @@
 				/>
 			</li>
 		{/each}
+
+		<li class="history-item">
+			<h3>Original image</h3>
+			<p class="credits">
+				Photo by
+				<a
+					href="https://unsplash.com/@baileyzindel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+				>
+					Bailey Zindel
+				</a>
+				on
+				<a
+					href="https://unsplash.com/s/photos/landscape?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"
+					>Unsplash</a
+				>
+			</p>
+			<img src={'/1.jpg'} alt="landscape" />
+		</li>
 	</ul>
 </main>
 
