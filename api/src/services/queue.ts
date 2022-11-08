@@ -2,7 +2,7 @@ import queue from "queue";
 
 const q = queue({
   concurrency: 1,
-  timeout: 100,
+  timeout: 200,
   autostart: true,
 });
 
