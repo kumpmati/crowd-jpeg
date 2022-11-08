@@ -16,6 +16,9 @@ export const resetImageHandler: RequestHandler = async (req, res, next) => {
   console.log(rest, id, secret);
 
   const newState = await resetState(id as string, secret as string);
+
+  console.log({ newState });
+
   if (!newState) {
     return next(new AppError(400, "id or secret did not match"));
   }

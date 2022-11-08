@@ -76,20 +76,18 @@ export const resetState = async (id: string, secret: string) => {
   const isValid = id === currentState.id && secret === currentState.resetSecret;
   if (!isValid) return null;
 
-  addToQueue(async () => {
-    const nextState = await produce(getCurrentState(), async (prev) => {
-      const image = await loadImageFromDisk();
+  const nextState = await produce(getCurrentState(), async (prev) => {
+    const image = await loadImageFromDisk();
 
-      prev.count = 0;
-      prev.image = image.data;
-      prev.meta = image.meta;
-      prev.resetSecret = uuid();
-      prev.id = uuid();
-    });
-
-    // update state
-    _state = nextState;
+    prev.count = 0;
+    prev.image = image.data;
+    prev.meta = image.meta;
+    prev.resetSecret = uuid();
+    prev.id = uuid();
   });
+
+  // update state
+  _state = nextState;
 
   return getCurrentState();
 };
