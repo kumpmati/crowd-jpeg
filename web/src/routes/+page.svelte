@@ -20,11 +20,11 @@
 
 <svelte:head>
 	<title>You are visit #{data.count}</title>
-	<link rel="icon" href={'data: image/jpeg; base64,' + data.data} />
+	<link rel="icon" href={'data: image/jpeg; base64,' + data.image} />
 </svelte:head>
 
 <img
-	src={showOriginal ? `${PUBLIC_API_URL}/static/1.jpg` : 'data: image/jpeg; base64,' + data.data}
+	src={showOriginal ? `${PUBLIC_API_URL}/static/1.jpg` : 'data: image/jpeg; base64,' + data.image}
 	width={1280}
 	height={720}
 	alt="image of a landscape compressed {data.count} times"

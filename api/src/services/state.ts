@@ -1,15 +1,15 @@
-import { PictureState } from "../types/picture";
 import { getCached } from "./cache";
 import { degradeImage, loadImageFromDisk } from "./image";
 import { v4 as uuid } from "uuid";
 import produce from "immer";
 import { addToQueue } from "./queue";
+import { PictureState } from "../schemas/picture";
 
 // in-memory state
 let _state: PictureState = {
   id: uuid(),
   count: 0,
-  data: null,
+  image: null,
   resetSecret: uuid(),
 };
 
@@ -24,13 +24,13 @@ export const advanceState = async () => {
   addToQueue(async () => {
     const nextState = await produce(getCurrentState(), async (prev) => {
       // load image if it doesn't exist
-      if (!prev.data) {
+      if (!prev.image) {
         const image = await getCached("original_image", loadImageFromDisk);
-        prev.data = image;
+        prev.image = image;
       }
 
       prev.count += 1;
-      prev.data = await degradeImage(prev.data);
+      prev.image = await degradeImage(prev.image);
     });
 
     // update state
@@ -54,7 +54,7 @@ export const resetState = async (id: string, secret: string) => {
       const image = await getCached("original_image", loadImageFromDisk);
 
       prev.count = 0;
-      prev.data = image;
+      prev.image = image;
       prev.resetSecret = uuid();
       prev.id = uuid();
     });

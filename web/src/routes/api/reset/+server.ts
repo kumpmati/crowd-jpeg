@@ -1,5 +1,5 @@
+import { PRIVATE_API_URL } from '$env/static/private';
 import type { RequestHandler } from './$types';
-import { DB_NAME } from '$env/static/private';
 
 export const GET: RequestHandler = async ({ fetch, request }) => {
 	const url = new URL(request.url);
@@ -7,7 +7,7 @@ export const GET: RequestHandler = async ({ fetch, request }) => {
 	const id = url.searchParams.get('id');
 	const secret = url.searchParams.get('secret');
 
-	const requestPath = `${DB_NAME}/api/reset?id=${id}&secret=${secret}`;
+	const requestPath = `${PRIVATE_API_URL}/api/reset?id=${id}&secret=${secret}`;
 
 	const response = await fetch(requestPath)
 		.then(async (d) => d.json())

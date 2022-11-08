@@ -29,3 +29,13 @@ export const degradeImage = async (image: Buffer): Promise<Buffer> => {
 
   return updatedPicture;
 };
+
+export const downsizeImage = async (image: Buffer | null): Promise<Buffer> => {
+  if (!image) return Buffer.from([]);
+
+  const updatedPicture = await sharp(image)
+    .resize({ width: 1280 / 2, height: 720 / 2 })
+    .toBuffer();
+
+  return updatedPicture;
+};
