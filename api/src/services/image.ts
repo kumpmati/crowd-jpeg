@@ -54,7 +54,7 @@ export const degradeImage = async (image: Buffer): Promise<Buffer | null> => {
   const updatedPicture = await sharp(image)
     .sharpen({ m1: 0.2, sigma: Math.random() < 0.005 ? 0.5 : 0.2 })
     .webp({ quality: 40 })
-    .gamma(1.15)
+    .gamma(Math.random() < 0.005 ? 1.3 : 1.15)
     .jpeg({ quality: 40 + delta })
     .toBuffer()
     .catch(() => null);
