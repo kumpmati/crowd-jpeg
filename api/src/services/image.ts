@@ -50,8 +50,10 @@ export const loadImageFromDisk = async () => {
  */
 export const degradeImage = async (image: Buffer): Promise<Buffer | null> => {
   const delta = Math.random() > 0.5 ? -2 : 2;
+  const sizeDelta = Math.random() < 0.005 ? 4 : 0;
 
   const updatedPicture = await sharp(image)
+    .resize({ width: 1280 + sizeDelta, height: 720 + sizeDelta })
     .sharpen({ m1: 0.2, sigma: Math.random() < 0.005 ? 0.5 : 0.2 })
     .webp({ quality: 40 })
     .gamma(Math.random() < 0.005 ? 1.3 : 1.15)

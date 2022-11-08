@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { DB_NAME, DB_URI } from "../config/env";
 import { PictureState } from "../schemas/picture";
 import { Snapshot, SnapshotModel } from "../schemas/snapshot";
-import { downsizeImage } from "./image";
 
 export const initMongoose = async () => {
   if (!mongoose.connection.readyState) {
@@ -26,7 +25,7 @@ export const saveSnapshot = async (data: PictureState) => {
   const snapshot: Snapshot = {
     id: data.id,
     count: data.count,
-    image: await downsizeImage(data.image),
+    image: data.image!,
     date: new Date(),
     meta: data.meta,
   };
