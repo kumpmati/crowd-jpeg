@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import produce from "immer";
 import { addToQueue } from "./queue";
 import { PictureState } from "../schemas/picture";
+import { getNewestSnapshot } from "./database";
 
 // in-memory state
 let _state: PictureState = {
@@ -11,6 +12,20 @@ let _state: PictureState = {
   count: 0,
   image: null,
   resetSecret: uuid(),
+};
+
+/**
+ * Attempts to load the latest state from the database
+ */
+export const restoreState = async () => {
+  const newest = await getNewestSnapshot();
+
+  _state.id = newest?.id;
+  _state.count = newest?.count ?? 0;
+  _state.image = newest?.image ?? null;
+  _state.resetSecret = uuid();
+
+  console.log("restored state to newest snapshot");
 };
 
 export const getCurrentState = () => {
@@ -29,8 +44,11 @@ export const advanceState = async () => {
         prev.image = image;
       }
 
+      const newImage = await degradeImage(prev.image);
+      if (!newImage) return;
+
       prev.count += 1;
-      prev.image = await degradeImage(prev.image);
+      prev.image = newImage;
     });
 
     // update state

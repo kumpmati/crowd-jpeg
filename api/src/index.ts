@@ -6,12 +6,14 @@ import { errorHandlerMiddleware } from "./middleware/handleError";
 import { startBackupService } from "./services/backup";
 import { initMongoose } from "./services/database";
 import cors from "cors";
+import { restoreState } from "./services/state";
 
 const start = async () => {
   const app = express();
   const http = new Server(app);
 
   await initMongoose();
+  await restoreState();
 
   startBackupService();
 

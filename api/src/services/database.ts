@@ -10,6 +10,10 @@ export const initMongoose = async () => {
   }
 };
 
+export const getNewestSnapshot = async () => {
+  return await SnapshotModel.findOne({}).sort({ date: -1 }).exec();
+};
+
 export const getAllSnapshots = async () => {
   return await SnapshotModel.find({});
 };

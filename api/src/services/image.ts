@@ -18,14 +18,15 @@ export const loadImageFromDisk = async () => {
  * Takes in a base64-format image, and degrades it a little bit.
  * Returns the degraded image as a base64 string.
  */
-export const degradeImage = async (image: Buffer): Promise<Buffer> => {
-  const sizeDelta = Math.random() > 0.5 ? -5 : 5;
+export const degradeImage = async (image: Buffer): Promise<Buffer | null> => {
+  const delta = Math.random() > 0.5 ? -2 : 2;
 
   const updatedPicture = await sharp(image)
     // resize the image every time to ensure it degrades a little every time
-    .resize({ width: 1280 + sizeDelta, height: 720 + sizeDelta })
-    .jpeg({ quality: 40 })
-    .toBuffer();
+    .resize({ width: 1280 + delta, height: 720 + delta })
+    .jpeg({ quality: 40 + delta })
+    .toBuffer()
+    .catch(() => null);
 
   return updatedPicture;
 };
