@@ -2,7 +2,7 @@
 
 [Visit the live website here](https://crowd-jpeg.vercel.app)
 
-Every time a user visits the site, the background image get resized a bit, deteriorating it further.
+Every time a user visits the site, the background image's quality gets slightly worse.
 Every 400 visits a reset button appears that can reset the image's quality to its original state.
 
 This is a small experimental project. Nothing fancy.
