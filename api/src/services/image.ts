@@ -56,7 +56,7 @@ export const degradeImage = async (image: Buffer): Promise<Buffer | null> => {
     .resize({ width: 1280 + sizeDelta, height: 720 + sizeDelta })
     .sharpen({ m1: 0.2, sigma: Math.random() < 0.01 ? 0.5 : 0.2 })
     .webp({ quality: 40 })
-    .gamma(Math.random() < 0.005 ? 1.3 : 1.15)
+    .gamma(Math.random() < 0.005 ? 1.15 : 1.0)
     .jpeg({ quality: 40 + delta })
     .toBuffer()
     .catch(() => null);
