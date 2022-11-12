@@ -5,7 +5,7 @@ This is a simple express.js server written in TypeScript.
 ## Requirements:
 
 - Node.js 16.x or above
-- A MongoDB database
+- A MongoDB database (optional)
 
 ## Initial setup
 

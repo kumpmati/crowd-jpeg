@@ -17,10 +17,6 @@ export const getAllSnapshots = async () => {
   return await SnapshotModel.find({});
 };
 
-export const getSnapshotById = async (id: string) => {
-  return await SnapshotModel.find({ id });
-};
-
 export const saveSnapshot = async (data: PictureState) => {
   const snapshot: Snapshot = {
     id: data.id,

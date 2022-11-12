@@ -1,6 +1,6 @@
 import express from "express";
 import { Server } from "http";
-import { PORT } from "./config/env";
+import { DB_ENABLED, PORT } from "./config/env";
 import { apiRouter } from "./handlers";
 import { errorHandlerMiddleware } from "./middleware/handleError";
 import { startBackupService } from "./services/backup";
@@ -12,10 +12,11 @@ const start = async () => {
   const app = express();
   const http = new Server(app);
 
-  await initMongoose();
-  await restoreState();
-
-  startBackupService();
+  if (DB_ENABLED) {
+    await initMongoose();
+    await restoreState();
+    startBackupService();
+  }
 
   app.use(cors()); // TODO: more strict origins
   app.use("/static", express.static("static"));
