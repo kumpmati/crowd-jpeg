@@ -8,3 +8,7 @@ Every 400 visits a reset button appears that can reset the image's quality to it
 This is a small experimental project. Nothing fancy.
 
 Made using SvelteKit + MongoDB and deployed to Vercel (frontend) and AWS (backend).
+
+[Frontend README](./web/README.md)
+
+[API README](./api/README.md)
