@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>About</title>
+	<title>Crowd JPEG - About</title>
 </svelte:head>
 
 <main>
